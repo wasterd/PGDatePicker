@@ -23,9 +23,7 @@
 
 @property (nonatomic, assign) CGFloat offset;
 @property (nonatomic, assign) NSInteger offsetCount;
-@property (nonatomic, assign) NSInteger copyOffsetCount;
 @property (nonatomic) CGFloat upLinePosY;
-@property(nonatomic, assign) BOOL copyCycleScroll;
 
 @property (nonatomic, assign) CGFloat upLineHeight;
 @property (nonatomic, assign) CGFloat downLineHeight;
@@ -39,6 +37,10 @@
 
 @property (nonatomic, assign) CGFloat circumference;
 @property (nonatomic, assign) CGFloat radius;
+
+@property(nonatomic, assign) BOOL copyCycleScroll;
+@property (nonatomic, assign) NSInteger copyOffsetCount;
+@property (nonatomic, assign) CGFloat copyOffsetY;
 @end
 
 @implementation PGPickerColumnView
@@ -77,23 +79,23 @@ static NSString *const cellReuseIdentifier = @"PGPickerColumnCell";
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    if (self.isSubViewLayouted) {
-        return;
-    }
-    self.isSubViewLayouted = true;
-    if (!self.isSelected) {
-        return;
-    }
-    CGFloat time = 0.15;
-    if (_isAnimationOfSelectedRow) {
-        time = 0.26;
-    }
-    __block id blockSelf = self;
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC));
-    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        [blockSelf selectRow:self.numberOfSelectedRow animated:self.isAnimationOfSelectedRow];
-        blockSelf = nil;
-    });
+//    if (self.isSubViewLayouted) {
+//        return;
+//    }
+//    self.isSubViewLayouted = true;
+//    if (!self.isSelected) {
+//        return;
+//    }
+//    CGFloat time = 0.15;
+//    if (_isAnimationOfSelectedRow) {
+//        time = 0.26;
+//    }
+//    __block id blockSelf = self;
+//    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC));
+//    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+//        [blockSelf selectRow:self.numberOfSelectedRow animated:self.isAnimationOfSelectedRow];
+//        blockSelf = nil;
+//    });
 }
 
 - (void)setupCycleScrollWithDatas:(NSArray *)datas {
@@ -187,14 +189,14 @@ static NSString *const cellReuseIdentifier = @"PGPickerColumnCell";
     _isSelected = true;
     if (!animated) {
         if (self.isSubViewLayouted) {
-            self.centerTableView.contentOffset = CGPointMake(0, row * self.rowHeight);
+            self.centerTableView.contentOffset = CGPointMake(0, newRow * self.rowHeight);
             _isSelected = false;
             self.selectedRow = newRow;
         }else {
             __block PGPickerColumnView *blockSelf = self;
             dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC));
             dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-                blockSelf.centerTableView.contentOffset = CGPointMake(0, row * blockSelf.rowHeight);
+                blockSelf.centerTableView.contentOffset = CGPointMake(0, newRow * blockSelf.rowHeight);
                 blockSelf.isSelected = false;
                 blockSelf.selectedRow = row;
                 blockSelf = nil;
@@ -228,6 +230,25 @@ static NSString *const cellReuseIdentifier = @"PGPickerColumnCell";
         return [self.delegate pickerColumnView:self textColorOfOtherRow:row InComponent:self.component];
     }
     return self.textColorOfOtherRow;
+}
+
+- (NSInteger)setupSelectedRow {
+    NSInteger row =  self.centerTableView.contentOffset.y / self.rowHeight +  0.5;
+    if (self.isCycleScroll) {
+        CGFloat posY = self.centerTableView.contentOffset.y + self.copyOffsetCount * self.rowHeight + self.rowHeight / 2;
+        NSInteger count = posY / (self.datas.count * self.rowHeight);
+        CGFloat newPosY = (self.centerTableView.contentOffset.y + self.copyOffsetCount * self.rowHeight) - (self.datas.count * self.rowHeight) * count;
+        if (newPosY < 0) {
+            newPosY = 0;
+        }
+        row =  newPosY / self.rowHeight +  0.5;
+    }
+    return row;
+}
+
+- (void)setupTableViewScroll:(UITableView *)tableView {
+    NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:CGPointMake(tableView.contentOffset.x, tableView.contentOffset.y + self.rowHeight / 2)];
+    [tableView scrollToRowAtIndexPath: indexPath atScrollPosition: UITableViewScrollPositionTop animated:YES];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -287,17 +308,12 @@ static NSString *const cellReuseIdentifier = @"PGPickerColumnCell";
 }
 
 - (void)scrollViewDidEndDecelerating:(UITableView *)tableView {
-    NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:CGPointMake(tableView.contentOffset.x, tableView.contentOffset.y + self.rowHeight / 2)];
-    [tableView scrollToRowAtIndexPath: indexPath atScrollPosition: UITableViewScrollPositionTop animated:YES];
-    if (!_isSelected) {
-        NSInteger row =  self.centerTableView.contentOffset.y / self.rowHeight +  0.5;
-        self.selectedRow = row;
-    }
+    [self scrollViewDidEndScrollingAnimation:tableView];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
-    NSInteger row =  self.centerTableView.contentOffset.y / self.rowHeight +  0.5;
-    self.selectedRow = row;
+- (void)scrollViewDidEndScrollingAnimation:(UITableView *)tableView {
+    [self setupTableViewScroll:tableView];
+    self.selectedRow = [self setupSelectedRow];
 }
 
 #pragma mark - row logic

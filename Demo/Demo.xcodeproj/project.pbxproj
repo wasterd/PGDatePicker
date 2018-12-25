@@ -36,6 +36,9 @@
 		8680B24B207B9C69003DA00D /* PGDatePicker+MonthDayHour.m in Sources */ = {isa = PBXBuildFile; fileRef = 8680B24A207B9C69003DA00D /* PGDatePicker+MonthDayHour.m */; };
 		8680B24E207BA1B4003DA00D /* PGDatePicker+MonthDayHourMinute.m in Sources */ = {isa = PBXBuildFile; fileRef = 8680B24D207BA1B4003DA00D /* PGDatePicker+MonthDayHourMinute.m */; };
 		8680B251207BA99F003DA00D /* PGDatePicker+MonthDayHourMinuteSecond.m in Sources */ = {isa = PBXBuildFile; fileRef = 8680B250207BA99F003DA00D /* PGDatePicker+MonthDayHourMinuteSecond.m */; };
+		869F39C821D2779000A6C203 /* RevealServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 869F39C721D2779000A6C203 /* RevealServer.framework */; };
+		869F39C921D2779600A6C203 /* RevealServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 869F39C721D2779000A6C203 /* RevealServer.framework */; };
+		869F39CA21D2779600A6C203 /* RevealServer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 869F39C721D2779000A6C203 /* RevealServer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		86D350631FADF82B0089617F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D350621FADF82B0089617F /* AudioToolbox.framework */; };
 		86D350E91FAE3D340089617F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86D350EB1FAE3D340089617F /* Main.storyboard */; };
 		C82C7B072064FB0E000C9604 /* PGDatePicker+DateHour.m in Sources */ = {isa = PBXBuildFile; fileRef = C82C7B062064FB0E000C9604 /* PGDatePicker+DateHour.m */; };
@@ -48,6 +51,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				869F39CA21D2779600A6C203 /* RevealServer.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -114,6 +118,7 @@
 		8680B24D207BA1B4003DA00D /* PGDatePicker+MonthDayHourMinute.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PGDatePicker+MonthDayHourMinute.m"; sourceTree = "<group>"; };
 		8680B24F207BA99F003DA00D /* PGDatePicker+MonthDayHourMinuteSecond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PGDatePicker+MonthDayHourMinuteSecond.h"; sourceTree = "<group>"; };
 		8680B250207BA99F003DA00D /* PGDatePicker+MonthDayHourMinuteSecond.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PGDatePicker+MonthDayHourMinuteSecond.m"; sourceTree = "<group>"; };
+		869F39C721D2779000A6C203 /* RevealServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RevealServer.framework; sourceTree = "<group>"; };
 		86D350621FADF82B0089617F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		86D350EA1FAE3D340089617F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		86D350EC1FAE3D3E0089617F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
@@ -128,7 +133,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				869F39C921D2779600A6C203 /* RevealServer.framework in Frameworks */,
 				86D350631FADF82B0089617F /* AudioToolbox.framework in Frameworks */,
+				869F39C821D2779000A6C203 /* RevealServer.framework in Frameworks */,
 				1EDA25BA09FE89D7BDAF0AEA /* libPods-Demo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -166,6 +173,7 @@
 		862DEB831F395BEC00B5AB4C /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				869F39C621D2779000A6C203 /* iOS-Libraries */,
 				866BE8CB205F5BAD001943C0 /* PGDatePicker */,
 				86D350EB1FAE3D340089617F /* Main.storyboard */,
 				862DEB871F395BEC00B5AB4C /* AppDelegate.h */,
@@ -245,6 +253,14 @@
 			name = PGDatePicker;
 			path = ../../PGDatePicker;
 			sourceTree = "<group>";
+		};
+		869F39C621D2779000A6C203 /* iOS-Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				869F39C721D2779000A6C203 /* RevealServer.framework */,
+			);
+			path = "iOS-Libraries";
+			sourceTree = SOURCE_ROOT;
 		};
 		A665A7AB72AB1E4CC9E7B989 /* Pods */ = {
 			isa = PBXGroup;
@@ -494,9 +510,22 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 65MUSRJ8L7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/iOS-Libraries",
+				);
 				INFOPLIST_FILE = Demo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"PGPickerView\"",
+					"-framework",
+					"\"UIKit\"",
+					"-weak_framework",
+					RevealServer,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.piggybear.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -509,6 +538,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 65MUSRJ8L7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/iOS-Libraries",
+				);
 				INFOPLIST_FILE = Demo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
