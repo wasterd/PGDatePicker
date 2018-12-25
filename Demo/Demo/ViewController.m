@@ -79,6 +79,7 @@
     datePicker.delegate = self;
     datePicker.datePickerType = PGDatePickerType3;
     datePicker.isHiddenMiddleText = false;
+    datePicker.isCycleScroll = true;
     datePicker.datePickerMode = PGDatePickerModeDate;
     [self presentViewController:datePickManager animated:false completion:nil];
     
@@ -101,16 +102,16 @@
     PGDatePicker *datePicker = datePickManager.datePicker;
     datePicker.delegate = self;
     datePicker.datePickerMode = PGDatePickerModeDateHour;
+    datePicker.isCycleScroll = true;
     [self presentViewController:datePickManager animated:false completion:nil];
     
-//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
-//    dateFormatter.dateFormat = @"yyyy-MM-dd HH";
-//
-//    datePicker.minimumDate = [dateFormatter dateFromString: @"2018-02-01 05"];
-//    datePicker.maximumDate = [dateFormatter dateFromString: @"2028-02-01 05"];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH";
     
-//    NSDate *date = [dateFormatter dateFromString: @"2020-02-01 05"];
-//    [datePicker setDate:date animated: true];
+    datePicker.minimumDate = [dateFormatter dateFromString: @"2017-02-01 05"];
+    datePicker.maximumDate = [dateFormatter dateFromString: @"2018-02-01 05"];
+    //    NSDate *date = [dateFormatter dateFromString: @"2020-02-01 05"];
+    //    [datePicker setDate:date animated: true];
 }
 
 /**
