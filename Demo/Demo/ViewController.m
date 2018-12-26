@@ -108,10 +108,10 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
     dateFormatter.dateFormat = @"yyyy-MM-dd HH";
     
-    datePicker.minimumDate = [dateFormatter dateFromString: @"2017-02-01 05"];
-    datePicker.maximumDate = [dateFormatter dateFromString: @"2018-02-01 05"];
-    //    NSDate *date = [dateFormatter dateFromString: @"2020-02-01 05"];
-    //    [datePicker setDate:date animated: true];
+    datePicker.minimumDate = [dateFormatter dateFromString: @"2018-02-01 05"];
+    datePicker.maximumDate = [dateFormatter dateFromString: @"2019-02-01 05"];
+    NSDate *date = [dateFormatter dateFromString: @"2018-10-16 20"];
+    [datePicker setDate:date animated: true];
 }
 
 /**
